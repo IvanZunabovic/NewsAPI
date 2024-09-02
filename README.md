@@ -45,9 +45,15 @@ Clone the Repository
 
 ```bash
 
-git clone https://github.com/your-username/your-repo-name.git
+git clone https://github.com/IvanZunabovic/NewsAPI.git
 cd your-repo-name
 
+```
+
+Configure APDATA environment variable
+
+```bash
+APPDATA=/tmp docker-compose up -d --build
 ```
 
 Build and Run with Docker Compose
