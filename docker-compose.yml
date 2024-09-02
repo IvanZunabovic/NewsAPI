@@ -1,0 +1,81 @@
+version: '3.4'
+
+services:
+  gateway:
+    image: ${DOCKER_REGISTRY-}gateway
+    container_name: gateway
+    build:
+      context: .
+      dockerfile: Api.Gateway/Dockerfile
+    ports:
+      - "4000:4000"
+      # - "4001:4001"
+    networks:
+      - my_network
+
+  newsapi:
+    image: ${DOCKER_REGISTRY-}newsapi
+    container_name: news-api
+    build:
+      context: .
+      dockerfile: NewsAPI/Dockerfile
+    networks:
+      - my_network
+    expose:
+      - "5000"
+      # - "5001"
+    depends_on:
+      - sqlserver
+
+  newsapi1:
+    image: ${DOCKER_REGISTRY-}newsapi
+    container_name: news-api1
+    build:
+      context: .
+      dockerfile: NewsAPI/Dockerfile
+    networks:
+      - my_network
+    expose:
+      - "6000"
+      # - "6001"
+    depends_on:
+      - sqlserver
+      - newsapi
+
+  newsapi2:
+    image: ${DOCKER_REGISTRY-}newsapi
+    container_name: news-api2
+    build:
+      context: .
+      dockerfile: NewsAPI/Dockerfile
+    networks:
+      - my_network
+    expose:
+      - "7000"
+      # - "7001"
+    depends_on:
+      - sqlserver
+      - newsapi
+      
+  # migration:
+  #   image: ${DOCKER_REGISTRY-}newsapi
+  #   container_name: migration_runner
+  #   command: dotnet ef database update --no-build
+  #   depends_on:
+  #     - sqlserver
+
+  sqlserver:
+    container_name: sql_server_container
+    hostname: sql_server_container
+    image: mcr.microsoft.com/mssql/server
+    ports:
+      - 1433:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Welcome$2u
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge
