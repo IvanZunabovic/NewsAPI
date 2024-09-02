@@ -33,7 +33,7 @@ public sealed class CreateNewsCommandHandler : ICommandHandler<CreateNewsCommand
                 $"Author with id {request.AuthorId} does not exist"));
         }
 
-        var news = Domain.Entities.News.Create(request.Title, content.Value, request.CreatedAt, request.AuthorId);
+        var news = Domain.Entities.News.Create(request.Title, content.Value, DateTime.UtcNow, request.AuthorId);
 
         await _newsRepository.AddAsync(news);
         return Result.Success();

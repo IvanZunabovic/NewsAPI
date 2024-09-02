@@ -6,5 +6,4 @@ public sealed record UpdateNewsCommand(
     Guid Id,
     string Title,
     string Content,
-    DateTime UpdateAt,
     Guid currentAuthorId) : ICommand;
